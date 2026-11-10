@@ -1,9 +1,9 @@
-# DoyiGo WhatsApp Köprü – Android uygulaması
+# DoyiGo WhatsApp Köprü – Güvenli test sürümü
 
-Bu bağımsız uygulamanın paket kimliği **com.doyigo.whatsappbridge.client** olarak sabitlenmiştir (v0.5 ve sonrası). Önceki paket kimliği **com.doyigo.whatsappbridge** ile çakışmaması için bir defalık geçiş yapılmıştır.
+Android uygulama kimliği: `com.doyigo.whatsappbridge.client` (0.5 ve sonrası).
 
-Bundan sonraki sürümler aynı paket kimliği, aynı APK imzalama anahtarı ve artan `versionCode` ile yayımlanmalıdır. Android APK yalnızca aynı kimlik ve imzayla mevcut sürümün üzerine yüklenir.
+v0.6: Google Play Protect engeline yol açan Erişilebilirlik hizmeti ve erişim izni kaldırıldı. WhatsApp, WhatsApp Business tercihi kaydedilir; ancak telefonun klon uygulama seçimini Android sistemi yönetir ve her açılışta sorabilir.
 
-İşlevler: Mesaj yazma, bir WhatsApp paketi tercihini hatırlama ve yalnız kullanıcı tetikleyince erişilebilirlik izniyle WhatsApp'taki Gönder düğmesine basmayı deneme. Telefonun klon uygulama seçim ekranını üretici yazılımı kontrol edebilir; uygulama tek başına bu seçimi saklayamayabilir.
+Test mesajı uygulama içinden hazırlanır ve WhatsApp'ta kullanıcı onayıyla gönderilir. **Bu uygulama otomatik gönderim yapmaz.** Tam otomatik WhatsApp sipariş bildirimleri için resmi WhatsApp Business Platform API entegrasyonu gerekir.
 
-Gerçek sipariş sistemiyle bağlantı kurulmadı. Otomatik WhatsApp gönderimi test aşamasındadır.
+Bundan sonraki güncellemelerde paket kimliği, imza anahtarı aynı tutulmalı ve versionCode artırılmalıdır. Önceki 0.5 kullanıcıları uygun imzalı güncelleme dosyasını doğrudan kurabilirler.

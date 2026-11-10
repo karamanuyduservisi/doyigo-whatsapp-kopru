@@ -3,9 +3,6 @@ package com.doyigo.whatsappbridge;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.accessibilityservice.AccessibilityServiceInfo;
-import android.view.accessibility.AccessibilityManager;
-import android.provider.Settings;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -125,7 +122,7 @@ public final class MainActivity extends Activity {
     info.setBackground(card(0xfffff4e7, 13, 0xffffedce));
     info.addView(label("Nasıl çalışır?", 14, 0xff7f531f, true));
     space(info, 6);
-    info.addView(label("Test mesajını yaz. Bir kere Erişilebilirlik izni verdikten sonra WhatsApp'ta gönderme düğmesine otomatik basmayı dener.", 13, 0xff805e35, false));
+    info.addView(label("Test mesajını yaz. WhatsApp'ta mesaj hazırlanır; göndermek için WhatsApp'taki Gönder'e bas.", 13, 0xff805e35, false));
     content.addView(info);
     scroll.addView(content);
     screen.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
@@ -216,21 +213,6 @@ public final class MainActivity extends Activity {
       return;
     }
     saveDraft();
-    if (!autoSendEnabled()) {
-      new AlertDialog.Builder(this)
-        .setTitle("Otomatik gönderimi etkinleştir")
-        .setMessage("DoyiGo Köprü yalnızca senin başlattığın test mesajı için WhatsApp gönder düğmesine basmayı dener. WhatsApp ekranından sunucuya veri aktarmaz. Telefonunun Erişilebilirlik ayarlarında DoyiGo Test Otomatik Gönderim izni gerekir.")
-        .setPositiveButton("Ayarlara git", (dialog, which) ->
-            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)))
-        .setNegativeButton("Vazgeç", (dialog, which) -> dialog.dismiss())
-        .show();
-      return;
-    }
-    String chosen = prefs.getString("target", ASK);
-    prefs.edit().putString("pending_msg", body)
-      .putString("pending_pkg", ASK.equals(chosen) ? "" : chosen)
-      .putLong("pending_started", System.currentTimeMillis())
-      .putBoolean("pending_done", false).commit();
     Uri url = Uri.parse("https://wa.me/" + number + "?text=" + Uri.encode(body));
     String selected = prefs.getString("target", ASK);
     Intent intent = new Intent(Intent.ACTION_VIEW, url);
@@ -257,27 +239,8 @@ public final class MainActivity extends Activity {
       PendingIntent chooserCallback = PendingIntent.getBroadcast(this, 104, callback, flags);
       startActivity(Intent.createChooser(intent, "WhatsApp uygulamasını seç", chooserCallback.getIntentSender()));
     } catch (ActivityNotFoundException | SecurityException error) {
-      clearPending();
       Toast.makeText(this, "WhatsApp açılamadı. Ayarlar'dan uygulamayı seç.", Toast.LENGTH_LONG).show();
     }
-  }
-
-  private void clearPending() {
-    prefs.edit().remove("pending_msg").remove("pending_pkg")
-      .remove("pending_started").remove("pending_done").apply();
-  }
-
-  private boolean autoSendEnabled() {
-    AccessibilityManager manager = (AccessibilityManager) getSystemService(ACCESSIBILITY_SERVICE);
-    if (manager == null) return false;
-    for (AccessibilityServiceInfo info : manager.getEnabledAccessibilityServiceList(
-        AccessibilityServiceInfo.FEEDBACK_ALL_MASK)) {
-      if (info.getResolveInfo() == null || info.getResolveInfo().serviceInfo == null) continue;
-      android.content.pm.ServiceInfo si = info.getResolveInfo().serviceInfo;
-      if (getPackageName().equals(si.packageName)
-          && AutoSendService.class.getName().equals(si.name)) return true;
-    }
-    return false;
   }
 
   private boolean installed(String p) {

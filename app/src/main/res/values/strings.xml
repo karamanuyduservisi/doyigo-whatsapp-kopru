@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
- <string name="auto_send_name">DoyiGo Test Otomatik Gönderim</string>
- <string name="auto_send_description">Yalnızca uygulama içinden sizin başlattığınız test mesajı için WhatsApp gönder düğmesine basar. Mesajlar sunucuya aktarılmaz.</string>
-</resources>
