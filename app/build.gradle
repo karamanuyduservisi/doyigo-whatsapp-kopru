@@ -3,11 +3,11 @@ android {
     namespace 'com.doyigo.whatsappbridge'
     compileSdk 35
     defaultConfig {
-        applicationId 'com.doyigo.whatsappbridge'
+        applicationId 'com.doyigo.whatsappbridge.client'
         minSdk 26
         targetSdk 34
-        versionCode 4
-        versionName '0.4.0-test'
+        versionCode 5
+        versionName '0.5.0-test'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
