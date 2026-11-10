@@ -254,8 +254,8 @@ public final class MainActivity extends Activity {
       Intent callback = new Intent(this, ChoiceReceiver.class);
       int flags = PendingIntent.FLAG_UPDATE_CURRENT;
       if (Build.VERSION.SDK_INT >= 31) flags |= PendingIntent.FLAG_MUTABLE;
-      PendingIntent chosen = PendingIntent.getBroadcast(this, 104, callback, flags);
-      startActivity(Intent.createChooser(intent, "WhatsApp uygulamasını seç", chosen.getIntentSender()));
+      PendingIntent chooserCallback = PendingIntent.getBroadcast(this, 104, callback, flags);
+      startActivity(Intent.createChooser(intent, "WhatsApp uygulamasını seç", chooserCallback.getIntentSender()));
     } catch (ActivityNotFoundException | SecurityException error) {
       clearPending();
       Toast.makeText(this, "WhatsApp açılamadı. Ayarlar'dan uygulamayı seç.", Toast.LENGTH_LONG).show();
