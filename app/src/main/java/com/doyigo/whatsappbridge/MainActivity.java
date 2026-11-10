@@ -196,7 +196,6 @@ public final class MainActivity extends Activity {
         refreshChosenLabel();
         dialog.dismiss();
       })
-      .setMessage("Seçim kaydedilir. Çift uygulama kopyalarını Android yönetir.")
       .setNegativeButton("Kapat", (dialog, which) -> dialog.dismiss())
       .show();
   }
@@ -235,8 +234,9 @@ public final class MainActivity extends Activity {
     }
     try {
       Intent callback = new Intent(this, ChoiceReceiver.class);
-      PendingIntent chosen = PendingIntent.getBroadcast(
-          this, 104, callback, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+      int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+      if (Build.VERSION.SDK_INT >= 31) flags |= PendingIntent.FLAG_MUTABLE;
+      PendingIntent chosen = PendingIntent.getBroadcast(this, 104, callback, flags);
       startActivity(Intent.createChooser(intent, "WhatsApp uygulamasını seç", chosen.getIntentSender()));
     } catch (ActivityNotFoundException | SecurityException error) {
       Toast.makeText(this, "WhatsApp açılamadı. Ayarlar'dan uygulamayı seç.", Toast.LENGTH_LONG).show();
